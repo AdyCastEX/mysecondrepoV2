@@ -57,7 +57,7 @@ class Enable_disable extends CI_Controller {
 	/*
 		sample ajax call
 		$.ajax({
-			url : "http://localhost/myfirstrepo/index.php/enable_disable/activate/"+ username +"/"+ student_no + "/" + email,
+			url : "http://localhost/mysecondrepoV2/index.php/enable_disable/activate/"+ username +"/"+ student_no + "/" + email,
 			type : 'POST',
 			dataType : "html",
 			async : true,
@@ -92,7 +92,7 @@ class Enable_disable extends CI_Controller {
 	/*
 		sample ajax call
 		$.ajax({
-			url : "http://localhost/myfirstrepo/index.php/enable_disable/disable/"+ username +"/"+ student_no + "/" + email,
+			url : "http://localhost/mysecondrepoV2/index.php/enable_disable/disable/"+ username +"/"+ student_no + "/" + email,
 			type : 'POST',
 			dataType : "html",
 			async : true,
@@ -125,7 +125,7 @@ class Enable_disable extends CI_Controller {
 	/*
 		sample ajax call
 		$.ajax({
-			url : "http://localhost/myfirstrepo/index.php/enable_disable/enable/"+ username +"/"+ student_no + "/" + email,
+			url : "http://localhost/mysecondrepoV2/index.php/enable_disable/enable/"+ username +"/"+ student_no + "/" + email,
 			type : 'POST',
 			dataType : "html",
 			async : true,

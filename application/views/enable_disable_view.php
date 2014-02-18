@@ -66,7 +66,7 @@
 				?>
           	</div>
 		</div>
-		<script type="text/javascript" src = "http://localhost/myfirstrepo/jquery-1.11.0.js"></script>
+		<script type="text/javascript" src = "http://localhost/mysecondrepoV2/jquery-1.11.0.js"></script>
 		<script type = "text/javascript">
 
 			//Script Author : Cyril Justine D. Bravo
@@ -137,7 +137,7 @@
 				if(confirm(constr))
 				{
 					$.ajax({
-						url : "http://localhost/myfirstrepo/index.php/enable_disable/activate/"+ username +"/"+ student_no + "/" + email,
+						url : "http://localhost/mysecondrepoV2/index.php/enable_disable/activate/"+ username +"/"+ student_no + "/" + email,
 						type : 'POST',
 						dataType : "html",
 						async : true,
@@ -161,7 +161,7 @@
 				if(confirm(constr))
 				{
 					$.ajax({
-						url : "http://localhost/myfirstrepo/index.php/enable_disable/disable/"+ username +"/"+ student_no + "/" + email,
+						url : "http://localhost/mysecondrepoV2/index.php/enable_disable/disable/"+ username +"/"+ student_no + "/" + email,
 						type : 'POST',
 						dataType : "html",
 						async : true,
@@ -184,7 +184,7 @@
 				if(confirm(constr))
 				{
 					$.ajax({
-						url : "http://localhost/myfirstrepo/index.php/enable_disable/enable/"+ username +"/"+ student_no + "/" + email,
+						url : "http://localhost/mysecondrepoV2/index.php/enable_disable/enable/"+ username +"/"+ student_no + "/" + email,
 						type : 'POST',
 						dataType : "html",
 						async : true,
