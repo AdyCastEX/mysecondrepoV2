@@ -39,6 +39,11 @@ class Enable_disable_model extends CI_Model {
 					$sql = $sql." WHERE student_no LIKE '".$field['student_no']."'";
 				break;
 			}
+			Case "empno" : {
+				if($field['employee_no'] != '')
+					$sql = $sql." WHERE emp_no LIKE '".$field['employee_no']."'";
+				break;
+			}
 			Case "uname" : {
 				if($field['username'] != '')
 					$sql = $sql." WHERE username LIKE '".$field['username']."'";
@@ -82,15 +87,15 @@ class Enable_disable_model extends CI_Model {
 		}
 	}
 
-	public function activate($username, $student_no, $email)
+	public function activate($username, $number, $email)
 	{
 		/*
 			this function validates and activates accounts
 		*/
 
-		$sql = "SELECT * FROM our WHERE student_no LIKE '".$student_no."'";
+		$sql = "SELECT * FROM our WHERE student_no LIKE '".$number."'";
 
-		$array = $this->db->query($sql);//checks the our_data for a student
+		$array = $this->db->query($sql);//checks the our data for a student
 
 		if ($array->num_rows() > 0)//checks if search returned with any results
 		{
@@ -105,9 +110,29 @@ class Enable_disable_model extends CI_Model {
 				$success =  false;
 			}
 		}
-		else
+		else//if no student has been found, checks employees
 		{
-			$success =  false;
+			$sql = "SELECT * FROM employee WHERE employee_no LIKE '".$number."'"
+
+			$array = $this->db->query($sql);//checks the employee for a match
+
+			if ($array->num_rows() > 0)//checks if search returned with any results
+			{
+				if ($array->num_rows() == 1)//checks if search returned with a valid result
+				{
+					$update = "UPDATE user SET status = 'enabled' WHERE username LIKE '".$username."' AND email LIKE '".$email."'";
+
+					$success = $this->db->query($update);//checks if the update has been implemented
+				}
+				else
+				{
+					$success =  false;
+				}
+			}
+			else
+			{
+				$success =  false;
+			}
 		}
 
 		return $success;
@@ -125,7 +150,7 @@ class Enable_disable_model extends CI_Model {
 		return $success;
 	}
 
-	public function disable($username, $student_no, $email)
+	public function disable($username, $email)
 	{
 		/*
 			this function disables accounts

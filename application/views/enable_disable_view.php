@@ -9,6 +9,7 @@
 			  		<select name="field" onchange='changeTextBox(value)'>
 						<option value="name">Name</option>
 						<option value="stdno">Student Number</option>
+						<option value="empno">Employee Number</option>
 						<option value="uname">Username</option>
 						<option value="email">Email Address</option>
 					</select>
@@ -99,6 +100,15 @@
  						'name': 'studentno',
  						'type': 'text',
  						'placeholder': 'Enter student number'
+ 					});
+				}
+				else if(value=='empno'){
+					string = "<input id='enterEmpno'/>"; //creates field for studno
+	            	$('#divtext').html(string);
+	            	$('#divtext #enterEmpno').attr({ // set attributes for empno
+ 						'name': 'employeeno',
+ 						'type': 'text',
+ 						'placeholder': 'Enter employee number'
  					});
 				}
 				else if(value=='uname'){
