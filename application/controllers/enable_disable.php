@@ -35,6 +35,11 @@ class Enable_disable extends CI_Controller {
 				break;
 			}
 
+			case "stdno": {
+				$data['employee_no'] = $_POST["employeeno"];
+				break;
+			}
+
 			case "uname": {
 				$data['username'] = $_POST["username"];
 				break;
@@ -66,7 +71,7 @@ class Enable_disable extends CI_Controller {
 				
 	*/
 
-	public function activate($username, $student_no, $email)
+	public function activate($username, $number, $email)
 	{
 		/*
 			activates a user account
@@ -76,7 +81,7 @@ class Enable_disable extends CI_Controller {
 		$action = "activate";//hardcoded
 
 		$this->load->model('enable_disable_model');//loads model
-		if($this->enable_disable_model->activate($username, $student_no, $email))//calls function activate
+		if($this->enable_disable_model->activate($username, $number, $email))//calls function activate
 			$this->enable_disable_model->log($admin, $username, $email, $action);//calls function log from model if activate returns true
 
 		//will not be used if this function was called using AJAX	
@@ -100,7 +105,7 @@ class Enable_disable extends CI_Controller {
 		});
 	*/
 
-	public function enable($username, $student_no, $email)
+	public function enable($username, $email)
 	{
 		/*
 			enables a user account
@@ -133,7 +138,7 @@ class Enable_disable extends CI_Controller {
 		});
 	*/
 
-	public function disable($username, $student_no, $email)
+	public function disable($username, $email)
 	{
 		/*
 			disables a user account
@@ -142,7 +147,7 @@ class Enable_disable extends CI_Controller {
 		$action = "disable";//hardcoded
 
 		$this->load->model('enable_disable_model');//loads model
-		if($this->enable_disable_model->disable($username, $student_no, $email))//calls function disable from model
+		if($this->enable_disable_model->disable($username, $email))//calls function disable from model
 			$this->enable_disable_model->log($admin, $username, $email, $action);//calls function log from model if disable returns true
 		
 		//will not be used if this function was called using AJAX
