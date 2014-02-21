@@ -21,48 +21,52 @@ class Enable_disable extends CI_Controller {
 
 	public function search()
 	{
-		$data['field'] = $_POST["field"];//copies the data from $_POST to an array
+		// Sanitation Author: Cyril Justine D. Bravo
+		// Description: Sanitizes queries in the user search
+		$data['field'] = filter_var($_POST["field"],FILTER_SANITIZE_STRING);
 		switch($_POST["field"]){
 			case "name": {
-				$data['fname'] = $_POST["firstname"];
-				$data['mname'] = $_POST["middlename"];
-				$data['lname'] = $_POST["lastname"];
+				$data['fname'] = filter_var($_POST["firstname"],FILTER_SANITIZE_STRING);
+				$data['mname'] = filter_var($_POST["middlename"],FILTER_SANITIZE_STRING);
+				$data['lname'] = filter_var($_POST["lastname"],FILTER_SANITIZE_STRING);
 				break;
 			}
 
 			case "stdno": {
-				$data['student_no'] = $_POST["studentno"];
+				$data['student_no']= filter_var($_POST["studentno"],FILTER_SANITIZE_STRING);
 				break;
 			}
 
-			case "stdno": {
-				$data['employee_no'] = $_POST["employeeno"];
+			case "empno": {
+				$data['employee_no']= filter_var($_POST["employeeno"],FILTER_SANITIZE_STRING);
 				break;
 			}
 
 			case "uname": {
-				$data['username'] = $_POST["username"];
+				$data['username'] = filter_var($_POST["username"],FILTER_SANITIZE_STRING);
 				break;
 			}
 
 			case "email": {
-				$data['email'] = $_POST["emailadd"];
+				$data['email'] = filter_var($_POST["emailadd"],FILTER_SANITIZE_STRING);
 				break;
 			}
 		}
-		$data['status'] = $_POST["status"];
+		$data['status'] = filter_var($_POST["status"],FILTER_SANITIZE_STRING);
 		$this->load->model('enable_disable_model');
 		$this->session->set_userdata('sql', $this->enable_disable_model->generateQuery($data));//puts the sql query to the session
 		$result = $this->enable_disable_model->runQuery($this->session->userdata('sql'));//gets the result from the query
-		$array['result'] = $result;							//passes the result to the view 
+		$array['result'] = $result;	
+		$this->load->view('header');						//passes the result to the view 
 		$this->load->view('enable_disable_view', $array);	//loads the view with the results
+		$this->load->view('footer');
 	}
 
 
 	/*
 		sample ajax call
 		$.ajax({
-			url : "http://localhost/mysecondrepoV2/index.php/enable_disable/activate/"+ username +"/"+ student_no + "/" + email,
+			url : "http://localhost/mysecondrepoV2/index.php/enable_disable/activate/"+ username +"/" + usertype + "/"+ number + "/" + email,
 			type : 'POST',
 			dataType : "html",
 			async : true,
@@ -71,7 +75,7 @@ class Enable_disable extends CI_Controller {
 				
 	*/
 
-	public function activate($username, $number, $email)
+	public function activate($username, $usertype, $number, $email)
 	{
 		/*
 			activates a user account
@@ -81,13 +85,14 @@ class Enable_disable extends CI_Controller {
 		$action = "activate";//hardcoded
 
 		$this->load->model('enable_disable_model');//loads model
-		if($this->enable_disable_model->activate($username, $number, $email))//calls function activate
+		$success = $this->enable_disable_model->activate($username, $usertype, $number, $email);
+		if($success)//calls function activate
 			$this->enable_disable_model->log($admin, $username, $email, $action);//calls function log from model if activate returns true
 
 		//will not be used if this function was called using AJAX	
-		$result = $this->enable_disable_model->runQuery($this->session->userdata('sql'));	//refreshes
-		$array['result'] = $result;															//page
-		$this->load->view('enable_disable_view', $array);									//with same query
+		//$result = $this->enable_disable_model->runQuery($this->session->userdata('sql'));	//refreshes
+		//$array['result'] = $result;															//page
+		//$this->load->view('enable_disable_view', $array);									//with same query
 
 		//used for AJAX implementation
 		$json = array('success' => $success);
@@ -114,13 +119,14 @@ class Enable_disable extends CI_Controller {
 		$action = "enable";//hardcoded
 
 		$this->load->model('enable_disable_model');//loads model
-		if($this->enable_disable_model->enable($username, $email))//calls function enable from model
+		$success = $this->enable_disable_model->enable($username, $email);
+		if($success)//calls function enable from model
 			$this->enable_disable_model->log($admin, $username, $email, $action);//calls function log from model if enable returns true
 		
 		//will not be used if this function was called using AJAX
-		$result = $this->enable_disable_model->runQuery($this->session->userdata('sql'));	//refreshes
-		$array['result'] = $result;															//page
-		$this->load->view('enable_disable_view', $array);									//with the same query
+		//$result = $this->enable_disable_model->runQuery($this->session->userdata('sql'));	//refreshes
+		//$array['result'] = $result;															//page
+		//$this->load->view('enable_disable_view', $array);									//with the same query
 		
 		//return value for AJAX implementation
 		$json = array('success' => $success);
@@ -147,13 +153,14 @@ class Enable_disable extends CI_Controller {
 		$action = "disable";//hardcoded
 
 		$this->load->model('enable_disable_model');//loads model
-		if($this->enable_disable_model->disable($username, $email))//calls function disable from model
+		$success = $this->enable_disable_model->disable($username, $email);
+		if($success)//calls function disable from model
 			$this->enable_disable_model->log($admin, $username, $email, $action);//calls function log from model if disable returns true
 		
 		//will not be used if this function was called using AJAX
-		$result = $this->enable_disable_model->runQuery($this->session->userdata('sql'));	//refreshes
-		$array['result'] = $result;															//page
-		$this->load->view('enable_disable_view', $array);									//with same query
+		//$result = $this->enable_disable_model->runQuery($this->session->userdata('sql'));	//refreshes
+		//$array['result'] = $result;															//page
+		//$this->load->view('enable_disable_view', $array);									//with same query
 
 		//return value for AJAX implementation
 		$json = array('success' => $success);
