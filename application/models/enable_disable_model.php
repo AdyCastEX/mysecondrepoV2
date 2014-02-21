@@ -87,54 +87,46 @@ class Enable_disable_model extends CI_Model {
 		}
 	}
 
-	public function activate($username, $number, $email)
+	public function activate($username, $usertype, $number, $email)
 	{
 		/*
 			this function validates and activates accounts
 		*/
 
-		$sql = "SELECT * FROM our WHERE student_no LIKE '".$number."'";
-
-		$array = $this->db->query($sql);//checks the our data for a student
-
-		if ($array->num_rows() > 0)//checks if search returned with any results
+		if($usertype == "student")
 		{
-			if ($array->num_rows() == 1)//checks if search returned with a valid result
+			$sql = "SELECT * FROM our WHERE student_no LIKE '".$number."'";
+
+			$array = $this->db->query($sql);//checks the our data for a student
+
+			if ($array->num_rows() > 0)//checks if search returned with any results
 			{
 				$update = "UPDATE user SET status = 'enabled' WHERE username LIKE '".$username."' AND email LIKE '".$email."'";
-
 				$success = $this->db->query($update);//checks if the update has been implemented
 			}
-			else
+			else//if no student has been found, delete
 			{
-				$success =  false;
+				$this->delete($username, $email);
+				$success = false;
 			}
 		}
-		else//if no student has been found, checks employees
+		else
 		{
-			$sql = "SELECT * FROM employee WHERE employee_no LIKE '".$number."'"
+			$sql = "SELECT * FROM employee WHERE employee_no LIKE '".$number."'";
 
 			$array = $this->db->query($sql);//checks the employee for a match
 
 			if ($array->num_rows() > 0)//checks if search returned with any results
 			{
-				if ($array->num_rows() == 1)//checks if search returned with a valid result
-				{
-					$update = "UPDATE user SET status = 'enabled' WHERE username LIKE '".$username."' AND email LIKE '".$email."'";
-
-					$success = $this->db->query($update);//checks if the update has been implemented
-				}
-				else
-				{
-					$success =  false;
-				}
+				$update = "UPDATE user SET status = 'enabled' WHERE username LIKE '".$username."' AND email LIKE '".$email."'";
+				$success = $this->db->query($update);//checks if the update has been implemented
 			}
-			else
+			else//if no employee has been found, delete
 			{
-				$success =  false;
+				$this->delete($username, $email);
+				$success = false;
 			}
 		}
-
 		return $success;
 	}
 
@@ -158,6 +150,18 @@ class Enable_disable_model extends CI_Model {
 		$update = "UPDATE user SET status = 'disabled' WHERE username LIKE '".$username."' AND email LIKE '".$email."'";
 		
 		$success = $this->db->query($update);//checks if the update has been implemented
+
+		return $success;
+	}
+
+	public function delete($username, $email)
+	{
+		/*
+			this function deletes accounts
+		*/
+		$delete = "DELETE FROM user WHERE username LIKE '".$username."' AND email LIKE '".$email."'";
+		
+		$success = $this->db->query($delete);//checks if the update has been implemented
 
 		return $success;
 	}
